@@ -11,4 +11,8 @@ public static class CustomerErrors
     public static Error InvalidCredentials = new(
         "Customer.InvalidCredentials",
         "The provided credentials were invalid");
+
+    public static Error EmailOrCpfAlreadyInUse = new(
+        "Customer.EmailOrCpfAlreadyInUse",
+        "Email or CPF already in use");
 }

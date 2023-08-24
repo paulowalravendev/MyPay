@@ -26,8 +26,7 @@ internal sealed class RegisterCustomerCommandHandler : ICommandHandler<RegisterC
             cancellationToken);
 
         if (cpfOrEmailAlreadyInUse)
-            // @TODO: Change for specif exception
-            throw new InvalidOperationException();
+            return Result.Failure<Guid>(CustomerErrors.EmailOrCpfAlreadyInUse);
 
         var salt = _passwordHasher.GenerateSalt();
         var hash = _passwordHasher.HashPassword(request.Password, salt);
