@@ -9,6 +9,7 @@ using MyPay.Application.Abstractions.Cryptography;
 using MyPay.Application.Abstractions.Data;
 using MyPay.Domain.Abstractions;
 using MyPay.Domain.Customers;
+using MyPay.Domain.Shopkeepers;
 using MyPay.Infrastructure.Authentication;
 using MyPay.Infrastructure.Clock;
 using MyPay.Infrastructure.Cryptography;
@@ -51,6 +52,7 @@ public static class DependencyInjection
         });
 
         services.AddScoped<ICustomerRepository, CustomerRepository>();
+        services.AddScoped<IShopkeeperRepository, ShopkeeperRepository>();
 
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<ApplicationDbContext>());
 
@@ -87,8 +89,12 @@ public static class DependencyInjection
         services.AddAuthorization(options =>
         {
             options.AddPolicy(
-                IdentityData.CustomerPolicy, 
+                IdentityData.CustomerPolicy,
                 policy => policy.RequireClaim(IdentityData.CustomerPolicyKey, IdentityData.CustomerPolicyValue));
+
+            options.AddPolicy(
+                IdentityData.ShopkeeperPolicy,
+                policy => policy.RequireClaim(IdentityData.ShopkeeperPolicyKey, IdentityData.ShopkeeperPolicyValue));
         });
 
         services.Configure<AuthenticationOptions>(configuration.GetSection("Authentication"));
