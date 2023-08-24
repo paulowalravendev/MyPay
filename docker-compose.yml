@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  mypay.api:
+    image: ${DOCKER_REGISTRY-}mypayapi
+    container_name: MyPay.Api
+    build:
+      context: .
+      dockerfile: src/MyPay.Api/Dockerfile
+    depends_on:
+      - mypay.db
+
+  mypay.db:
+    image: postgres:latest
+    container_name: Mypay.Db
+    environment:
+      - POSTGRES_DB=mypay
+      - POSTGRES_USER=mypay-admin
+      - POSTGRES_PASSWORD=mypay-password
+    volumes:
+      - ./.containers/database:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
